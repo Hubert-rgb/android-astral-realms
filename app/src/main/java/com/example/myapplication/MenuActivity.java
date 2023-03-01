@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,15 +32,9 @@ import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import kotlin.jvm.internal.TypeReference;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -57,8 +55,8 @@ public class MenuActivity extends AppCompatActivity {
         googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
-        signOutButton = findViewById(R.id.signOutButton);
-        nameTextView = findViewById(R.id.nameTextView);
+        signOutButton = findViewById(R.id.signOutButtonMenu);
+        nameTextView = findViewById(R.id.nameTextViewMenu);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null){
@@ -142,11 +140,55 @@ public class MenuActivity extends AppCompatActivity {
         newGalaxyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createGalaxy("1243");
+
+                showDialogue();
+
+
+
+                createGalaxy("1243 gal", 1, 8, 2);
             }
         });
-        createGalaxy("556");
+
+        createGalaxy("2137 galaxy", 2, 5, 2137);
     }
+    void showDialogue(){
+        /** how to relate to inflated view??? */
+        Dialog dialog = new Dialog(this);
+        View createGalaxyPopUp = getLayoutInflater().inflate(R.layout.popup, null);
+        createGalaxyPopUp.setTag(1);
+        createGalaxyPopUp.setId(R.id.popup);
+
+        dialog.setContentView(createGalaxyPopUp);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                View popupView = dialog.findViewById(R.id.popup);
+                TextView playerNumberFromSeekBarView = popupView.findViewById(R.id.playerNumberFromSeekBarView);
+                playerNumberFromSeekBarView.setText("123");
+                SeekBar numberSelectorBar = popupView.findViewById(R.id.seekBar);
+
+                numberSelectorBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                        playerNumberFromSeekBarView.setText(String.valueOf(progress));
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+            }
+        });
+        dialog.create();
+        dialog.show();
+    }
+
     void signOut(){
         googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -156,16 +198,22 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
     }
-    void createGalaxy(String text){
+    void createGalaxy(String galaxyName, int playerNumber, int maximalPlayerNumber, int galaxyId){
+
         LinearLayout layout = findViewById(R.id.galaxyTable);
-        View galaxyTableElement = getLayoutInflater().inflate(R.layout.galaxy_table_element, null);
+
+        ViewGroup galaxyTableElement = (ViewGroup) getLayoutInflater().inflate(R.layout.galaxy_table_element, null);
+
+        galaxyTableElement.setId(galaxyId);
+
+        TextView galaxyNameView = (TextView) galaxyTableElement.getChildAt(0);
+        TextView playerNumberView = (TextView) galaxyTableElement.getChildAt(1);
+
+        galaxyNameView.setText(galaxyName);
+        String playerNumberString = playerNumber + "/" + maximalPlayerNumber;
+        playerNumberView.setText(playerNumberString);
 
         layout.addView(galaxyTableElement);
-
-        TextView galaxyNameView = findViewById(R.id.galaxyNameView);
-        TextView playerNumberView = findViewById(R.id.playerNumberView);
-
-        galaxyNameView.setText(text);
     }
     public void displayGalaxies() {
 //        //List<Galaxy> galaxyList = getGalaxiesRequest();
