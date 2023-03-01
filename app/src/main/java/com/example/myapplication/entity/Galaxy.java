@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -19,5 +20,9 @@ public class Galaxy {
     private String galaxyName;
     private PeriodType periodType;
 
-
+    public Galaxy(int maximalUserNumber, String galaxyName, PeriodType periodType) {
+        this.maximalUserNumber = maximalUserNumber;
+        this.galaxyName = galaxyName;
+        this.periodType = periodType;
+    }
 }

@@ -18,12 +18,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/textView5"
+        android:id="@+id/galaxy_name_edit_text"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/text_and_border_blue"
-        android:hint="   Galaxy name   "
+        android:hint="Galaxy name"
+        android:textAlignment="center"
         android:inputType="textShortMessage"
         android:lines="1"
         android:textColor="@color/text_and_border_blue"
@@ -42,10 +43,10 @@
         android:text="Pick the maximal number of players"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/galaxy_name_edit_text" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/create_galaxy_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
